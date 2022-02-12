@@ -3,7 +3,7 @@ const express = require("express");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-// mongoose.connect("");
+// mongoose.connect("mongodb://27017/entries", {useNewUrlParser:true});
 
 const app=express();
 app.set("view engine", "ejs");
