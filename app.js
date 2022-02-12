@@ -3,12 +3,20 @@ const express = require("express");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-// mongoose.connect("mongodb://27017/entries", {useNewUrlParser:true});
+mongoose.connect("mongodb://localhost:27017/AccountDB");
 
 const app=express();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const infoSchema = mongoose.Schema({
+    username:String,
+    password:String,
+    thoughts:[String]
+})
+
+const  Account = mongoose.model("Account",infoSchema);
 
 app.get("/",function(req,res){
     res.render("home");
@@ -18,23 +26,33 @@ app.get("/register",function(req,res){
     res.render("register");
 });
 
-app.get("/:acc",function(req,res){
+app.get("/acc/:user",function(req,res){
     res.render("account");
 });
 
-app.post("/confirm",function(req,res){
+app.post("/confirm",async function(req,res){
     var a=req.body.pswd1;
     var b=req.body.pswd2;
-    // console.log(req.body);
+    console.log(req.body);
     if(a!=b)
     {
         res.redirect("/register");
     }
     else
     {
-        res.render("intro");
+        res.render("intro",{user:req.body.user});
+        const account = new Account({
+            username:req.body.user,
+            password:a,
+            thoughts:[]
+        });
+        await account.save(function(err){
+            if(err){
+                console.log(err);
+            }
+        });
     }
-})
+});
 app.listen(3000,function(){
     console.log("Listening to port 3000");
 });
