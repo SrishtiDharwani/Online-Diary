@@ -1,0 +1,10 @@
+<%-include("partials/header"); -%>
+    <form action="/acc/<%=account%>/thoughts" method="post">
+        <label for="">Title</label>
+        <input type="text" name="title">
+        <label for="">Body</label>
+        <input type="text" name="body">
+        <button type="submit">Submit</button>
+    </form>
+
+<%-include("partials/footer"); -%>    

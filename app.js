@@ -27,7 +27,11 @@ app.get("/register",function(req,res){
 });
 
 app.get("/acc/:user",function(req,res){
-    res.render("account");
+    res.render("account",{account:req.params.user});
+});
+
+app.get("/acc/:user/thoughts",function(req,res){
+    res.render("thoughts",{account:req.body.user});
 });
 
 app.post("/confirm",async function(req,res){
@@ -53,6 +57,11 @@ app.post("/confirm",async function(req,res){
         });
     }
 });
+
+app.post("/acc/:user/thoughts",function(req,res){
+    res.render("thoughts");
+});
+
 app.listen(3000,function(){
     console.log("Listening to port 3000");
 });
