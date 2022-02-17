@@ -3,7 +3,8 @@ const express = require("express");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/AccountDB");
+mongoose.connect("mongodb+srv://admin-srishti:12345@cluster0.swjyj.mongodb.net/accountsDB");
+// mongodb+srv://admin-srishti:12345@cluster0.swjyj.mongodb.net/accountsDB
 
 const app=express();
 app.set("view engine", "ejs");
@@ -59,9 +60,10 @@ app.post("/confirm",async function(req,res){
 });
 
 app.post("/acc/:user/thoughts",function(req,res){
-    res.render("thoughts");
+    res.render("account", {account:req.body.user});
 });
 
 app.listen(3000,function(){
     console.log("Listening to port 3000");
 });
+
