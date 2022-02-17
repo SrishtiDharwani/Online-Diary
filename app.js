@@ -14,7 +14,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const infoSchema = mongoose.Schema({
     username:String,
     password:String,
-    thoughts:[String]
+    thoughts:[{
+        date:String,
+        entry:String
+    }]
 })
 
 const  Account = mongoose.model("Account",infoSchema);
@@ -32,7 +35,7 @@ app.get("/acc/:user",function(req,res){
 });
 
 app.get("/acc/:user/thoughts",function(req,res){
-    res.render("thoughts",{account:req.body.user});
+    res.render("thoughts",{account:req.params.user});
 });
 
 app.post("/confirm",async function(req,res){
@@ -60,7 +63,20 @@ app.post("/confirm",async function(req,res){
 });
 
 app.post("/acc/:user/thoughts",function(req,res){
-    res.render("account", {account:req.body.user});
+    Account.updateOne({username:req.params.user}, function(err, acc)
+    {
+        if(err){
+            console.log(err);
+        }else {
+            if(acc){
+                acc.thoughts.append({date:"xyz",entry:req.body.entry});
+                acc.save();
+            }else{
+                console.log("Account not found");
+            }
+        }
+    })
+    res.render("account", {account:req.params.user});
 });
 
 app.listen(3000,function(){
