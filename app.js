@@ -3,9 +3,9 @@ const express = require("express");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-mongoose.connect("mongodb+srv://admin-srishti:12345@cluster0.swjyj.mongodb.net/accountsDB");
+// mongoose.connect("mongodb+srv://admin-srishti:12345@cluster0.swjyj.mongodb.net/accountsDB");
 // mongodb+srv://admin-srishti:12345@cluster0.swjyj.mongodb.net/accountsDB
-
+mongoose.connect("mongodb://localhost:27017/AccountsDB")
 const app=express();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -31,7 +31,13 @@ app.get("/register",function(req,res){
 });
 
 app.get("/acc/:user",function(req,res){
-    res.render("account",{account:req.params.user});
+    Account.findOne({username:req.params.user},function(err,account){
+        if(err){
+            console.log(err);
+        }else{
+            res.render("account",{account:req.params.user,entries:account.thoughts});            
+        }
+    });
 });
 
 app.get("/acc/:user/thoughts",function(req,res){
@@ -63,23 +69,17 @@ app.post("/confirm",async function(req,res){
 });
 
 app.post("/acc/:user/thoughts",function(req,res){
-    Account.updateOne({username:req.params.user}, function(err, acc)
-    {
-        if(err){
-            console.log(err);
-        }else {
-            if(acc){
-                acc.thoughts.append({date:"xyz",entry:req.body.entry});
-                acc.save();
-            }else{
-                console.log("Account not found");
-            }
+    console.log(req.params.user);
+    Account.findOneAndUpdate({username:req.params.user},{$push:{thoughts:{date:"xyz",entry:req.body.entry}}},function (error, success) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log(success);
         }
-    })
+    });
     res.render("account", {account:req.params.user});
 });
 
 app.listen(3000,function(){
     console.log("Listening to port 3000");
 });
-
