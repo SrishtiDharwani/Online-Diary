@@ -3,9 +3,9 @@ const express = require("express");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-// mongoose.connect("mongodb+srv://admin-srishti:12345@cluster0.swjyj.mongodb.net/accountsDB");
+mongoose.connect("mongodb+srv://admin-srishti:12345@cluster0.swjyj.mongodb.net/accountsDB");
 // mongodb+srv://admin-srishti:12345@cluster0.swjyj.mongodb.net/accountsDB
-mongoose.connect("mongodb://localhost:27017/AccountsDB")
+//mongoose.connect("mongodb://localhost:27017/AccountsDB")
 const app=express();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -70,14 +70,15 @@ app.post("/confirm",async function(req,res){
 
 app.post("/acc/:user/thoughts",function(req,res){
     console.log(req.params.user);
-    Account.findOneAndUpdate({username:req.params.user},{$push:{thoughts:{date:"xyz",entry:req.body.entry}}},function (error, success) {
+    Account.findOneAndUpdate({username:req.params.user},{$push:{thoughts:{date:new Date().toLocaleDateString(),entry:req.body.entry}}},function (error, success) {
         if (error) {
             console.log(error);
         } else {
             console.log(success);
+            res.redirect("/acc/"+req.params.user);
         }
     });
-    res.render("account", {account:req.params.user});
+    
 });
 
 app.listen(3000,function(){
