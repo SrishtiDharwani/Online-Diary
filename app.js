@@ -9,7 +9,7 @@ mongoose.connect(
   "mongodb+srv://admin-srishti:12345@cluster0.swjyj.mongodb.net/accountsDB"
 );
 // mongodb+srv://admin-srishti:12345@cluster0.swjyj.mongodb.net/accountsDB
-//mongoose.connect("mongodb://localhost:27017/AccountsDB")
+// mongoose.connect("mongodb://localhost:27017/AccountsDB");
 const app = express();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -101,7 +101,7 @@ app.post("/confirm", function (req, res) {
 app.post("/", function (req, res) {
   const user = req.body.user;
   const password = req.body.pswd2;
-
+  // console.log(user,password);
   Account.findOne({ username: user }, function (err, foundUser) {
     if (err) {
       console.log(err);
