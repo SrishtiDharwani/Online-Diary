@@ -92,7 +92,7 @@ app.post("/confirm", function (req, res) {
       if (err) {
         console.log(err);
       } else {
-        res.redirect("/acc/" + req.body.user);
+        res.render("intro",{user:req.body.user});
       }
     });
   });
