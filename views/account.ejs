@@ -1,8 +1,8 @@
-<%-include("partials/header"); -%>
-    <% entries.forEach(function(entry){%>
-        <h1><%=entry.date%> </h1>
-        <h4><%=entry.entry%></h4>
-    <%});%>
-    <a href="/acc/<%=account%>/thoughts"><button>Create</button></a>
+<%-include("partials/header"); -%> <% entries.forEach(function(entry){%>
+<h1><%=entry.date%></h1>
+<h4><%=entry.entry%></h4>
+<%});%>
+<a href="/acc/<%=account%>/thoughts"><button>Create</button></a>
+<a href="/"><button>Logout</button></a>
 
-<%-include("partials/footer"); -%>    
+<%-include("partials/footer"); -%>
